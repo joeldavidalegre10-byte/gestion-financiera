@@ -1,8 +1,10 @@
+
 import path from 'path'
-import { buildFigmaConfig } from '@payloadcms/figma'
+import { buildConfig } from 'payload'
 import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import { es as adminLanguage } from '@payloadcms/translations/languages/es'
 import { fileURLToPath } from 'url'
+
 import { Admins } from './collections/Admins'
 import { Media } from './collections/Media'
 import { Folders } from './collections/Folders'
@@ -20,7 +22,7 @@ import { Installments } from './collections/Installments'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
-export default buildFigmaConfig({
+export default buildConfig({
   admin: {
     user: Admins.slug,
     constrainWidth: true,
@@ -35,10 +37,14 @@ export default buildFigmaConfig({
       baseDir: path.resolve(dirname),
     },
   },
+
   i18n: {
     fallbackLanguage: 'es',
-    supportedLanguages: { 'es': adminLanguage },
+    supportedLanguages: {
+      es: adminLanguage,
+    },
   },
+
   collections: [
     Admins,
     Users,
@@ -54,14 +60,16 @@ export default buildFigmaConfig({
     IncomeSchedules,
     Reminders,
   ],
+
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
+
   localization: {
     locales: [{ code: 'en', label: 'English' }],
     fallback: true,
     defaultLocale: 'en',
   },
+
   plugins: [mcpPlugin({})],
-  figma: {},
 })
